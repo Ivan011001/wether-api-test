@@ -1,33 +1,73 @@
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Block } from 'notiflix/build/notiflix-block-aio';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import fecthWeatherByCityName from './weather-api';
 
-const weatherFormRef = document.querySelector('form');
 const weatherWrapperRef = document.querySelector('.weather-wrapper');
-const weatherSearchRef = document.querySelector('.js-weather-serch');
 
-weatherFormRef.addEventListener('submit', e => {
-  e.preventDefault();
-
-  fecthWeatherByCityName(weatherSearchRef.value)
-    .then(renderWeatherMarkup)
-    .catch(() => {});
+document.addEventListener('keydown', () => {
+  Confirm.prompt(
+    'Search',
+    'Choose the city',
+    '',
+    'Search',
+    'Cancel',
+    clientAnswer => {
+      if (!clientAnswer) {
+        return Report.failure(
+          'Search failed',
+          'Try to type in the correct name of the city',
+          'Okay'
+        );
+      }
+      fecthWeatherByCityName(clientAnswer)
+        .then(data => {
+          renderWeatherMarkup(data);
+          Notify.success('Here is your weather information', {
+            position: 'center-top',
+          });
+        })
+        .catch(() => {});
+    },
+    () => {},
+    {}
+  );
 });
 
 function renderWeatherMarkup({ weather, main, wind, sys, name }) {
   const markup = `
-      <p>City name: ${name}</p>
-      <p>Weather type: ${weather[0].main}</p>
-      <p>Weather description: ${weather[0].description}</p>
-      <p>Wind speed: ${wind.speed}</p>
-      <p>Temperature: ${convertKelToCel(main.temp)}</p>
-      <p>Max temperature: ${convertKelToCel(main.temp_max)}</p>
-      <p>Min temperature: ${convertKelToCel(main.temp_min)}</p>
-      <p>Pressure: ${main.pressure}</p>
-      <p>Sunrise: ${convertSecondsToTime(sys.sunrise)}</p>
-      <p>Sunset: ${convertSecondsToTime(sys.sunset)}</p>
+<div class="card">
+  <div class="card-body">
+  <img/>
+     <h5>${name}</h5>
+      <p class="card-text">
+        The weather in ${name} describes like ${
+    weather[0].main
+  }, specifically like ${weather[0].description}
+       </p>
+  </div>
+   <ul class="list-group list-group-flush">
+    <li class="list-group-item">Temperature: ${convertKelToCel(main.temp)}</li>
+    <li class="list-group-item">Max temperature: ${convertKelToCel(
+      main.temp_max
+    )}</li>
+  <li class="list-group-item">Min temperature: ${convertKelToCel(
+    main.temp_min
+  )}</li>
+    <li class="list-group-item">Wind speed: ${wind.speed}</li> 
+    <li class="list-group-item">Pressure: ${main.pressure}</li>
+    <li class="list-group-item">Sunrise: ${convertSecondsToTime(
+      sys.sunrise
+    )}</li> 
+    <li class="list-group-item">Sunset: ${convertSecondsToTime(
+      sys.sunset
+    )}</li> 
+  </ul>
+  </div>
   `;
-  weatherWrapperRef.innerHTML = markup;
+
+  weatherWrapperRef.insertAdjacentHTML('afterbegin', markup);
 }
 
 function convertSecondsToTime(seconds) {
