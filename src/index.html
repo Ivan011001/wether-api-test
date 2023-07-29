@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page title</title>
-    <link rel="stylesheet" href="./sass/index.scss" />
-    <script type="module" src="./index.js"></script>
+    <script type="module" defer src="./index.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <title>Document</title>
   </head>
   <body>
-    <!-- ❗️❗️❗️ Add partials like so for every page -->
-    <include src="./partials/example.html"></include>
+    <form action="">
+      <input class="js-weather-serch" type="text" name="serch" id="" />
+      <button type="submit" class="js-search-button">Search weather</button>
+    </form>
+    <div class="weather-wrapper"></div>
   </body>
 </html>
