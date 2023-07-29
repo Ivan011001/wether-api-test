@@ -5,6 +5,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import fecthWeatherByCityName from './weather-api';
 
 const weatherWrapperRef = document.querySelector('.weather-wrapper');
+const audioRef = document.querySelector('.cool-audio');
 
 document.addEventListener('keydown', () => {
   Confirm.prompt(
@@ -21,17 +22,34 @@ document.addEventListener('keydown', () => {
           'Okay'
         );
       }
+      Block.hourglass('.main-wrapper', 'Wait', {
+        position: 'absolute',
+      });
       fecthWeatherByCityName(clientAnswer)
         .then(data => {
+          if (data.cod === '404') {
+            Report.failure(
+              'Search failed',
+              'Try to type in the correct name of the city',
+              'Okay'
+            );
+          }
+          Block.remove('.main-wrapper');
           renderWeatherMarkup(data);
           Notify.success('Here is your weather information', {
-            position: 'center-top',
+            position: 'center-bottom',
           });
+          audioRef.play();
         })
         .catch(() => {});
     },
-    () => {},
-    {}
+    () => {
+      Report.failure(
+        'Search failed',
+        'Try to type in the correct name of the city',
+        'Okay'
+      );
+    }
   );
 });
 
