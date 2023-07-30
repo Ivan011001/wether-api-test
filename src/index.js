@@ -6,8 +6,9 @@ import fecthWeatherByCityName from './weather-api';
 
 const weatherWrapperRef = document.querySelector('.weather-wrapper');
 const audioRef = document.querySelector('.cool-audio');
+const startBtnRef = document.querySelector('.btn-primary');
 
-document.addEventListener('keydown', () => {
+startBtnRef.addEventListener('click', () => {
   Confirm.prompt(
     'Search',
     'Choose the city',
@@ -57,7 +58,9 @@ function renderWeatherMarkup({ weather, main, wind, sys, name }) {
   const markup = `
 <div class="card">
   <div class="card-body">
-  <img/>
+  <div class="weather-icon-wrapper">
+  <img class="weather-icon" src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png" alt="Weather icon"/>
+  </div>
      <h5>${name}</h5>
       <p class="card-text">
         The weather in ${name} describes like ${

@@ -22,19 +22,34 @@
       .main-wrapper {
         height: 100vh;
       }
+      .btn-wrapper {
+        display: flex;
+        justify-content: center;
+        padding: 20px 0;
+      }
       .weather-wrapper {
         display: flex;
         gap: 40px;
         flex-wrap: wrap;
       }
       .card {
-        flex-grow: 1;
+        /* flex-grow: 1; */
         width: 255px;
+      }
+      .weather-icon-wrapper {
+        display: flex;
+        justify-content: center;
       }
     </style>
   </head>
   <body>
     <div class="main-wrapper">
+      <div class="btn-wrapper">
+        <button type="button" data-action="start" class="btn btn-primary">
+          Start the search
+        </button>
+      </div>
+
       <div class="weather-wrapper"></div>
       <audio
         src="./Twitter Notification Sound Effect.mp3"
