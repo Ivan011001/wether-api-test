@@ -8,6 +8,11 @@ const audioRef = document.querySelector('.cool-audio');
 const clearBtnRef = document.querySelector('[data-action=clear]');
 const intWrapperRef = document.querySelector('#submit-form');
 
+const WEATHER_INFO_KEY = 'weather-information';
+weatherWrapperRef.innerHTML = JSON.parse(
+  localStorage.getItem(WEATHER_INFO_KEY)
+);
+
 intWrapperRef.addEventListener('submit', e => {
   e.preventDefault();
 
@@ -58,26 +63,26 @@ function renderWeatherMarkup({ weather, main, wind, sys, name }) {
   const markup = `
 <div class="card">
   <div class="card-body">
-  <div class="weather-icon-wrapper">
-  <img class="weather-icon" src="https://openweathermap.org/img/wn/${
-    weather[0].icon
-  }@2x.png" alt="Weather icon"/>
-  </div>
-     <h5>${name}</h5>
-      <p class="card-text">
-        The weather in ${name} describes like ${
+    <div class="weather-icon-wrapper">
+      <img class="weather-icon" src="https://openweathermap.org/img/wn/${
+        weather[0].icon
+      }@2x.png" alt="Weather icon"/>
+    </div>
+    <h5>${name}</h5>
+    <p class="card-text">
+      The weather in ${name} describes like ${
     weather[0].main
   }, specifically like ${weather[0].description}
-       </p>
+    </p>
   </div>
-   <ul class="list-group list-group-flush">
+  <ul class="list-group list-group-flush">
     <li class="list-group-item">Temperature: ${convertKelToCel(main.temp)}</li>
     <li class="list-group-item">Max temperature: ${convertKelToCel(
       main.temp_max
     )}</li>
-  <li class="list-group-item">Min temperature: ${convertKelToCel(
-    main.temp_min
-  )}</li>
+    <li class="list-group-item">Min temperature: ${convertKelToCel(
+      main.temp_min
+    )}</li>
     <li class="list-group-item">Wind speed: ${wind.speed}</li> 
     <li class="list-group-item">Pressure: ${main.pressure}</li>
     <li class="list-group-item">Sunrise: ${convertSecondsToTime(
@@ -87,10 +92,13 @@ function renderWeatherMarkup({ weather, main, wind, sys, name }) {
       sys.sunset
     )}</li> 
   </ul>
-  </div>
-  `;
+</div>`;
 
   weatherWrapperRef.insertAdjacentHTML('afterbegin', markup);
+  localStorage.setItem(
+    WEATHER_INFO_KEY,
+    JSON.stringify(weatherWrapperRef.innerHTML)
+  );
 }
 
 function convertSecondsToTime(seconds) {
