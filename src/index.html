@@ -22,10 +22,13 @@
       .main-wrapper {
         height: 100vh;
       }
-      .btn-wrapper {
+      .interactive-wrapper {
         display: flex;
         justify-content: center;
         padding: 20px 0;
+        align-items: baseline;
+        /* flex-wrap: wrap; */
+        gap: 30px;
       }
       .weather-wrapper {
         display: flex;
@@ -44,11 +47,33 @@
   </head>
   <body>
     <div class="main-wrapper">
-      <div class="btn-wrapper">
-        <button type="button" data-action="start" class="btn btn-primary">
-          Start the search
+      <form class="interactive-wrapper" action="" id="submit-form">
+        <div class="input-group input-group-sm mb-3" style="width: 300px">
+          <input
+            name="cityInput"
+            type="text"
+            class="form-control"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm"
+          />
+        </div>
+        <button
+          name="searchBth"
+          type="submit"
+          data-action="start"
+          class="btn btn-primary"
+        >
+          Search
         </button>
-      </div>
+        <button
+          name="clear-btn"
+          type="button"
+          data-action="clear"
+          class="btn btn-primary"
+        >
+          Clear
+        </button>
+      </form>
 
       <div class="weather-wrapper"></div>
       <audio
